@@ -5,21 +5,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Yatzy {
+public record Yatzy(int d1, int d2, int d3, int d4, int d5) {
 
-    protected int[] dice;
-    public Yatzy(int d1, int d2, int d3, int d4, int d5)
-    {
-        dice = new int[5];
-        dice[0] = d1;
-        dice[1] = d2;
-        dice[2] = d3;
-        dice[3] = d4;
-        dice[4] = d5;
-    }
-
-    public static int chance(int d1, int d2, int d3, int d4, int d5) {
-        return Stream.of(d1,d2,d3,d4,d5)
+    public static int chance(Yatzy yatzy) {
+        return Stream.of(yatzy.d1(),yatzy.d2(),yatzy.d3(),yatzy.d4(),yatzy.d5())
                      .reduce(0, Integer::sum);
     }
 
@@ -27,20 +16,20 @@ public class Yatzy {
         return Arrays.stream(dice).distinct().count() == 1 ? 50 :0;
     }
 
-    public static int ones(int d1, int d2, int d3, int d4, int d5) {
-        return getSumOf(d1,d2,d3,d4,d5,1);
+    public static int ones(Yatzy yatzy) {
+        return getSumOf(yatzy,1);
     }
 
-    public static int twos(int d1, int d2, int d3, int d4, int d5) {
-        return getSumOf(d1,d2,d3,d4,d5,2);
+    public static int twos(Yatzy yatzy) {
+        return getSumOf(yatzy,2);
     }
 
-    public static int threes(int d1, int d2, int d3, int d4, int d5) {
-        return getSumOf(d1,d2,d3,d4,d5,3);
+    public static int threes(Yatzy yatzy) {
+        return getSumOf(yatzy,3);
     }
 
-    private static int getSumOf(int d1, int d2, int d3, int d4, int d5, int target) {
-        return (int) Stream.of(d1, d2, d3, d4, d5)
+    private static int getSumOf(Yatzy yatzy, int target) {
+        return (int) Stream.of(yatzy.d1(),yatzy.d2(),yatzy.d3(),yatzy.d4(),yatzy.d5())
             .filter(dice -> dice.equals(target)).count() * target;
     }
 
@@ -57,27 +46,27 @@ public class Yatzy {
     }
 
     private  int getOccurrenceOf(int target) {
-        int[] occurrences = Arrays.stream(this.dice)
+        List<Integer> occurrences = Stream.of(d1,d2,d3,d4,d5)
             .filter(value -> value == target)
-            .toArray();
-        return occurrences.length * target;
+            .toList();
+        return occurrences.size() * target;
     }
 
 
-    public static int scorePair(int d1, int d2, int d3, int d4, int d5) {
-        return getDiceWithOccurrences(d1, d2, d3, d4, d5,2)
+    public static int scorePair(Yatzy yatzy) {
+        return getDiceWithOccurrences(yatzy,2)
                             .stream()
                             .max(Comparator.comparingInt(o -> o))
                             .orElse(0) * 2;
     }
 
-    public static int twoPairs(int d1, int d2, int d3, int d4, int d5) {
-        List<Integer> pairs = getDiceWithOccurrences(d1, d2, d3, d4, d5,2);
+    public static int twoPairs(Yatzy yatzy) {
+        List<Integer> pairs = getDiceWithOccurrences(yatzy,2);
         return pairs.size() >=2 ? pairs.stream().reduce(0, Integer::sum)*2 : 0;
     }
 
-    private static List<Integer> getDiceWithOccurrences(int d1, int d2, int d3, int d4, int d5, int minOccurrence) {
-        return Stream.of(d1, d2, d3, d4, d5)
+    private static List<Integer> getDiceWithOccurrences(Yatzy yatzy, int minOccurrence) {
+        return Stream.of(yatzy.d1(),yatzy.d2(),yatzy.d3(),yatzy.d4(),yatzy.d5())
                      .collect(Collectors.groupingBy(dice -> dice, Collectors.counting()))
                      .entrySet()
                      .stream()
@@ -86,30 +75,30 @@ public class Yatzy {
                      .toList();
     }
 
-    public static int fourOfSameKind(int d1, int d2, int d3, int d4, int d5) {
-        return getDiceWithOccurrences(d1,d2,d3,d4,d5,4)
+    public static int fourOfSameKind(Yatzy yatzy) {
+        return getDiceWithOccurrences(yatzy,4)
             .stream()
             .findFirst()
             .orElse(0) * 4;
     }
 
-    public static int threeOfSameKind(int d1, int d2, int d3, int d4, int d5) {
-        return getDiceWithOccurrences(d1,d2,d3,d4,d5,3)
+    public static int threeOfSameKind(Yatzy yatzy) {
+        return getDiceWithOccurrences(yatzy,3)
             .stream()
             .findFirst()
             .orElse(0) * 3;
     }
 
-    public static int smallStraight(int d1, int d2, int d3, int d4, int d5) {
-        return getStraight(d1,d2,d3,d4,d5,15,1,5);
+    public static int smallStraight(Yatzy yatzy) {
+        return getStraight(yatzy,15,1,5);
     }
 
-    public static int largeStraight(int d1, int d2, int d3, int d4, int d5) {
-        return getStraight(d1,d2,d3,d4,d5,20,2,6);
+    public static int largeStraight(Yatzy yatzy) {
+        return getStraight(yatzy,20,2,6);
     }
 
-    private static int getStraight(int d1, int d2, int d3,int d4, int d5, int result, int start, int end) {
-        List<Integer> list = Stream.of(d1,d2,d3,d4,d5)
+    private static int getStraight(Yatzy yatzy, int result, int start, int end) {
+        List<Integer> list = Stream.of(yatzy.d1(),yatzy.d2(),yatzy.d3(),yatzy.d4(),yatzy.d5())
                                    .distinct()
                                    .sorted()
                                    .toList();
