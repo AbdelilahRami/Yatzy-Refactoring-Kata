@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -5,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class YatzyTest {
 
     @Test
+    @DisplayName("Test chance method with different sets of dice values")
     public void chance_scores_sum_of_all_dice() {
         int expected = 15;
         int actual = Yatzy.chance(2,3,4,5,1);
@@ -12,7 +14,9 @@ public class YatzyTest {
         assertEquals(16, Yatzy.chance(3,3,4,5,1));
     }
 
-    @Test public void yatzy_scores_50() {
+    @Test
+    @DisplayName("Test yatzy method with different sets of dice values")
+    public void yatzy_scores_50() {
         int expected = 50;
         int actual = Yatzy.yatzy(4,4,4,4,4);
         assertEquals(expected, actual);
