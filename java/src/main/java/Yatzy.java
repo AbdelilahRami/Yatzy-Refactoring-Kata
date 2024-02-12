@@ -7,24 +7,24 @@ import java.util.stream.Stream;
 
 public record Yatzy(int d1, int d2, int d3, int d4, int d5) {
 
-    public static int chance(Yatzy yatzy) {
+    public static int scoreChance(Yatzy yatzy) {
         return Stream.of(yatzy.d1(),yatzy.d2(),yatzy.d3(),yatzy.d4(),yatzy.d5())
                      .reduce(0, Integer::sum);
     }
 
-    public static int yatzy(int... dice) {
+    public static int scoreYatzy(int... dice) {
         return Arrays.stream(dice).distinct().count() == 1 ? 50 :0;
     }
 
-    public static int ones(Yatzy yatzy) {
+    public static int scoreOnes(Yatzy yatzy) {
         return getSumOf(yatzy,1);
     }
 
-    public static int twos(Yatzy yatzy) {
+    public static int scoreTwos(Yatzy yatzy) {
         return getSumOf(yatzy,2);
     }
 
-    public static int threes(Yatzy yatzy) {
+    public static int scoreThrees(Yatzy yatzy) {
         return getSumOf(yatzy,3);
     }
 
@@ -33,15 +33,15 @@ public record Yatzy(int d1, int d2, int d3, int d4, int d5) {
             .filter(dice -> dice.equals(target)).count() * target;
     }
 
-    public int fours() {
+    public int scoreFours() {
         return getOccurrenceOf(4) * 4;
     }
 
-    public int fives() {
+    public int scoreFives() {
         return getOccurrenceOf(5) * 5;
     }
 
-    public int sixes() {
+    public int scoreSixes() {
         return getOccurrenceOf(6) * 6;
     }
 
@@ -60,7 +60,7 @@ public record Yatzy(int d1, int d2, int d3, int d4, int d5) {
                             .orElse(0) * 2;
     }
 
-    public static int twoPairs(Yatzy yatzy) {
+    public static int scoreTwoPairs(Yatzy yatzy) {
         List<Integer> pairs = getDiceWithOccurrences(yatzy,2);
         return pairs.size() >=2 ? pairs.stream().reduce(0, Integer::sum)*2 : 0;
     }
@@ -75,25 +75,25 @@ public record Yatzy(int d1, int d2, int d3, int d4, int d5) {
                      .toList();
     }
 
-    public static int fourOfSameKind(Yatzy yatzy) {
+    public static int scoreFourOfSameKind(Yatzy yatzy) {
         return getDiceWithOccurrences(yatzy,4)
             .stream()
             .findFirst()
             .orElse(0) * 4;
     }
 
-    public static int threeOfSameKind(Yatzy yatzy) {
+    public static int scoreThreeOfSameKind(Yatzy yatzy) {
         return getDiceWithOccurrences(yatzy,3)
             .stream()
             .findFirst()
             .orElse(0) * 3;
     }
 
-    public static int smallStraight(Yatzy yatzy) {
+    public static int scoreSmallStraight(Yatzy yatzy) {
         return getStraight(yatzy,15,1,5);
     }
 
-    public static int largeStraight(Yatzy yatzy) {
+    public static int scoreLargeStraight(Yatzy yatzy) {
         return getStraight(yatzy,20,2,6);
     }
 
@@ -105,13 +105,13 @@ public record Yatzy(int d1, int d2, int d3, int d4, int d5) {
         return (!list.isEmpty() && list.getFirst() == start && list.getLast() == end && list.size() == 5) ? result : 0;
     }
 
-    public static int fullHouse(Yatzy yatzy) {
+    public static int scoreFullHouse(Yatzy yatzy) {
         List<Integer> distinctDices = Stream.of(yatzy.d1(), yatzy.d2(), yatzy.d3(), yatzy.d4(), yatzy.d5())
             .collect(Collectors.groupingBy(integer -> integer, Collectors.counting()))
             .keySet()
             .stream()
             .toList();
-        return distinctDices.size() == 2 ? chance(yatzy) : 0;
+        return distinctDices.size() == 2 ? scoreChance(yatzy) : 0;
     }
 }
 
