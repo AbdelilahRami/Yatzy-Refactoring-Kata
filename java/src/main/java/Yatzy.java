@@ -34,22 +34,22 @@ public record Yatzy(int d1, int d2, int d3, int d4, int d5) {
     }
 
     public int fours() {
-        return getOccurrenceOf(4);
+        return getOccurrenceOf(4) * 4;
     }
 
     public int fives() {
-        return getOccurrenceOf(5);
+        return getOccurrenceOf(5) * 5;
     }
 
     public int sixes() {
-        return getOccurrenceOf(6);
+        return getOccurrenceOf(6) * 6;
     }
 
     private  int getOccurrenceOf(int target) {
         List<Integer> occurrences = Stream.of(d1,d2,d3,d4,d5)
             .filter(value -> value == target)
             .toList();
-        return occurrences.size() * target;
+        return occurrences.size() ;
     }
 
 
@@ -105,41 +105,13 @@ public record Yatzy(int d1, int d2, int d3, int d4, int d5) {
         return (!list.isEmpty() && list.getFirst() == start && list.getLast() == end && list.size() == 5) ? result : 0;
     }
 
-    public static int fullHouse(int d1, int d2, int d3, int d4, int d5)
-    {
-        int[] tallies;
-        boolean _2 = false;
-        int i;
-        int _2_at = 0;
-        boolean _3 = false;
-        int _3_at = 0;
-
-
-
-
-        tallies = new int[6];
-        tallies[d1-1] += 1;
-        tallies[d2-1] += 1;
-        tallies[d3-1] += 1;
-        tallies[d4-1] += 1;
-        tallies[d5-1] += 1;
-
-        for (i = 0; i != 6; i += 1)
-            if (tallies[i] == 2) {
-                _2 = true;
-                _2_at = i+1;
-            }
-
-        for (i = 0; i != 6; i += 1)
-            if (tallies[i] == 3) {
-                _3 = true;
-                _3_at = i+1;
-            }
-
-        if (_2 && _3)
-            return _2_at * 2 + _3_at * 3;
-        else
-            return 0;
+    public static int fullHouse(Yatzy yatzy) {
+        List<Integer> distinctDices = Stream.of(yatzy.d1(), yatzy.d2(), yatzy.d3(), yatzy.d4(), yatzy.d5())
+            .collect(Collectors.groupingBy(integer -> integer, Collectors.counting()))
+            .keySet()
+            .stream()
+            .toList();
+        return distinctDices.size() == 2 ? chance(yatzy) : 0;
     }
 }
 
