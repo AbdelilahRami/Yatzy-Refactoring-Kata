@@ -7,6 +7,10 @@ import java.util.stream.Stream;
 
 public record Yatzy(int d1, int d2, int d3, int d4, int d5) {
 
+    public Yatzy(int[] dice) {
+        this(dice[0], dice[1], dice[2], dice[3], dice[4]);
+    }
+
     public static int scoreChance(Yatzy yatzy) {
         return Stream.of(yatzy.d1(),yatzy.d2(),yatzy.d3(),yatzy.d4(),yatzy.d5())
                      .reduce(0, Integer::sum);
