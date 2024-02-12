@@ -65,55 +65,39 @@ public class Yatzy {
 
 
     public static int scorePair(int d1, int d2, int d3, int d4, int d5) {
-        return getDuplicates(d1, d2, d3, d4, d5)
+        return getDiceWithOccurrences(d1, d2, d3, d4, d5,2)
                             .stream()
                             .max(Comparator.comparingInt(o -> o))
                             .orElse(0) * 2;
     }
 
     public static int twoPairs(int d1, int d2, int d3, int d4, int d5) {
-        List<Integer> pairs = getDuplicates(d1, d2, d3, d4, d5);
+        List<Integer> pairs = getDiceWithOccurrences(d1, d2, d3, d4, d5,2);
         return pairs.size() >=2 ? pairs.stream().reduce(0, Integer::sum)*2 : 0;
     }
 
-    private static List<Integer> getDuplicates(int d1, int d2, int d3, int d4, int d5) {
+    private static List<Integer> getDiceWithOccurrences(int d1, int d2, int d3, int d4, int d5, int minOccurrence) {
         return Stream.of(d1, d2, d3, d4, d5)
                      .collect(Collectors.groupingBy(dice -> dice, Collectors.counting()))
                      .entrySet()
                      .stream()
-                     .filter(integerLongEntry -> integerLongEntry.getValue() >= 2)
+                     .filter(integerLongEntry -> integerLongEntry.getValue() >= minOccurrence)
                      .map(Map.Entry::getKey)
                      .toList();
     }
 
-    public static int four_of_a_kind(int _1, int _2, int d3, int d4, int d5)
-    {
-        int[] tallies;
-        tallies = new int[6];
-        tallies[_1-1]++;
-        tallies[_2-1]++;
-        tallies[d3-1]++;
-        tallies[d4-1]++;
-        tallies[d5-1]++;
-        for (int i = 0; i < 6; i++)
-            if (tallies[i] >= 4)
-                return (i+1) * 4;
-        return 0;
+    public static int fourOfSameKind(int d1, int d2, int d3, int d4, int d5) {
+        return getDiceWithOccurrences(d1,d2,d3,d4,d5,4)
+            .stream()
+            .findFirst()
+            .orElse(0) * 4;
     }
 
-    public static int three_of_a_kind(int d1, int d2, int d3, int d4, int d5)
-    {
-        int[] t;
-        t = new int[6];
-        t[d1-1]++;
-        t[d2-1]++;
-        t[d3-1]++;
-        t[d4-1]++;
-        t[d5-1]++;
-        for (int i = 0; i < 6; i++)
-            if (t[i] >= 3)
-                return (i+1) * 3;
-        return 0;
+    public static int threeOfSameKind(int d1, int d2, int d3, int d4, int d5) {
+        return getDiceWithOccurrences(d1,d2,d3,d4,d5,3)
+            .stream()
+            .findFirst()
+            .orElse(0) * 3;
     }
 
     public static int smallStraight(int d1, int d2, int d3, int d4, int d5)
