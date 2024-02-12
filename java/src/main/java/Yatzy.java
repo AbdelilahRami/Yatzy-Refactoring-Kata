@@ -1,4 +1,8 @@
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Yatzy {
@@ -60,40 +64,26 @@ public class Yatzy {
     }
 
 
-    public static int score_pair(int d1, int d2, int d3, int d4, int d5)
-    {
-        int[] counts = new int[6];
-        counts[d1-1]++;
-        counts[d2-1]++;
-        counts[d3-1]++;
-        counts[d4-1]++;
-        counts[d5-1]++;
-        int at;
-        for (at = 0; at != 6; at++)
-            if (counts[6-at-1] >= 2)
-                return (6-at)*2;
-        return 0;
+    public static int scorePair(int d1, int d2, int d3, int d4, int d5) {
+        return getDuplicates(d1, d2, d3, d4, d5)
+                            .stream()
+                            .max(Comparator.comparingInt(o -> o))
+                            .orElse(0) * 2;
     }
 
-    public static int two_pair(int d1, int d2, int d3, int d4, int d5)
-    {
-        int[] counts = new int[6];
-        counts[d1-1]++;
-        counts[d2-1]++;
-        counts[d3-1]++;
-        counts[d4-1]++;
-        counts[d5-1]++;
-        int n = 0;
-        int score = 0;
-        for (int i = 0; i < 6; i += 1)
-            if (counts[6-i-1] >= 2) {
-                n++;
-                score += (6-i);
-            }        
-        if (n == 2)
-            return score * 2;
-        else
-            return 0;
+    public static int twoPairs(int d1, int d2, int d3, int d4, int d5) {
+        List<Integer> pairs = getDuplicates(d1, d2, d3, d4, d5);
+        return pairs.size() >=2 ? pairs.stream().reduce(0, Integer::sum)*2 : 0;
+    }
+
+    private static List<Integer> getDuplicates(int d1, int d2, int d3, int d4, int d5) {
+        return Stream.of(d1, d2, d3, d4, d5)
+                     .collect(Collectors.groupingBy(dice -> dice, Collectors.counting()))
+                     .entrySet()
+                     .stream()
+                     .filter(integerLongEntry -> integerLongEntry.getValue() >= 2)
+                     .map(Map.Entry::getKey)
+                     .toList();
     }
 
     public static int four_of_a_kind(int _1, int _2, int d3, int d4, int d5)
