@@ -8,18 +8,14 @@ public class YatzyTest {
     @Test
     @DisplayName("Test chance method with different sets of dice values")
     public void chance_scores_sum_of_all_dice() {
-        int expected = 15;
-        int actual = Yatzy.chance(new Yatzy(2,3,4,5,1));
-        assertEquals(expected, actual);
+        assertEquals(15, Yatzy.chance(new Yatzy(2,3,4,5,1)));
         assertEquals(16, Yatzy.chance(new Yatzy(3,3,4,5,1)));
     }
 
     @Test
     @DisplayName("Test yatzy method with different sets of dice values")
     public void yatzy_scores_50() {
-        int expected = 50;
-        int actual = Yatzy.yatzy(4,4,4,4,4);
-        assertEquals(expected, actual);
+        assertEquals(50, Yatzy.yatzy(4,4,4,4,4));
         assertEquals(50, Yatzy.yatzy(6,6,6,6,6));
         assertEquals(0, Yatzy.yatzy(6,6,6,6,3));
     }
@@ -72,6 +68,7 @@ public class YatzyTest {
     }
 
     @Test
+    @DisplayName("Test onePair method with different sets of dice values")
     public void one_pair() {
         assertEquals(6, Yatzy.scorePair(new Yatzy(3,4,3,5,6)));
         assertEquals(10, Yatzy.scorePair(new Yatzy(5,3,3,3,5)));
@@ -79,20 +76,22 @@ public class YatzyTest {
     }
 
     @Test
+    @DisplayName("Test twoPairs method with different sets of dice values")
     public void two_Pair() {
         assertEquals(16, Yatzy.twoPairs(new Yatzy(3,3,5,4,5)));
         assertEquals(16, Yatzy.twoPairs(new Yatzy(3,3,5,5,5)));
     }
 
     @Test
-    public void three_of_a_kind() 
-    {
+    @DisplayName("Test three of same kind method with different sets of dice values")
+    public void three_of_a_kind() {
         assertEquals(9, Yatzy.threeOfSameKind(new Yatzy(3,3,3,4,5)));
         assertEquals(15, Yatzy.threeOfSameKind(new Yatzy(5,3,5,4,5)));
         assertEquals(9, Yatzy.threeOfSameKind(new Yatzy(3,3,3,3,5)));
     }
 
     @Test
+    @DisplayName("Test four of same kind method with different sets of dice values")
     public void four_of_a_knd() {
         assertEquals(12, Yatzy.fourOfSameKind(new Yatzy(3,3,3,3,5)));
         assertEquals(20, Yatzy.fourOfSameKind(new Yatzy(5,5,5,4,5)));
@@ -100,6 +99,7 @@ public class YatzyTest {
     }
 
     @Test
+    @DisplayName("Test smallStraight method with different sets of dice values")
     public void smallStraight() {
         assertEquals(15, Yatzy.smallStraight(new Yatzy(1,2,3,4,5)));
         assertEquals(15, Yatzy.smallStraight(new Yatzy(2,3,4,5,1)));
@@ -107,6 +107,7 @@ public class YatzyTest {
     }
 
     @Test
+    @DisplayName("Test largeStraight method with different sets of dice values")
     public void largeStraight() {
         assertEquals(20, Yatzy.largeStraight(new Yatzy(6,2,3,4,5)));
         assertEquals(20, Yatzy.largeStraight(new Yatzy(2,3,4,5,6)));
@@ -114,6 +115,7 @@ public class YatzyTest {
     }
 
     @Test
+    @DisplayName("Test fullHouse method with different sets of dice values")
     public void fullHouse() {
         assertEquals(18, Yatzy.fullHouse(new Yatzy(6,2,2,2,6)));
         assertEquals(0, Yatzy.fullHouse(new Yatzy(2,3,4,5,6)));
