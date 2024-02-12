@@ -4,14 +4,14 @@ import java.util.stream.Stream;
 public class Yatzy {
 
     protected int[] dice;
-    public Yatzy(int d1, int d2, int d3, int d4, int _5)
+    public Yatzy(int d1, int d2, int d3, int d4, int d5)
     {
         dice = new int[5];
         dice[0] = d1;
         dice[1] = d2;
         dice[2] = d3;
         dice[3] = d4;
-        dice[4] = _5;
+        dice[4] = d5;
     }
 
     public static int chance(int d1, int d2, int d3, int d4, int d5) {
@@ -24,58 +24,41 @@ public class Yatzy {
     }
 
     public static int ones(int d1, int d2, int d3, int d4, int d5) {
-        return (int) Stream.of(d1, d2, d3, d4, d5)
-            .filter(integer -> integer.equals(1)).count() ;
+        return getSumOf(d1,d2,d3,d4,d5,1);
     }
 
     public static int twos(int d1, int d2, int d3, int d4, int d5) {
-        return (int) Stream.of(d1, d2, d3, d4, d5)
-            .filter(integer -> integer.equals(2)).count() * 2;
+        return getSumOf(d1,d2,d3,d4,d5,2);
     }
 
     public static int threes(int d1, int d2, int d3, int d4, int d5) {
-        int s;    
-        s = 0;
-        if (d1 == 3) s += 3;
-        if (d2 == 3) s += 3;
-        if (d3 == 3) s += 3;
-        if (d4 == 3) s += 3;
-        if (d5 == 3) s += 3;
-        return s;
+        return getSumOf(d1,d2,d3,d4,d5,3);
     }
 
-
-
-    public int fours()
-    {
-        int sum;    
-        sum = 0;
-        for (int at = 0; at != 5; at++) {
-            if (dice[at] == 4) {
-                sum += 4;
-            }
-        }
-        return sum;
+    private static int getSumOf(int d1, int d2, int d3, int d4, int d5, int target) {
+        return (int) Stream.of(d1, d2, d3, d4, d5)
+            .filter(dice -> dice.equals(target)).count() * target;
     }
 
-    public int fives()
-    {
-        int s = 0;
-        int i;
-        for (i = 0; i < dice.length; i++) 
-            if (dice[i] == 5)
-                s = s + 5;
-        return s;
+    public int fours() {
+        return getOccurrenceOf(4);
     }
 
-    public int sixes()
-    {
-        int sum = 0;
-        for (int at = 0; at < dice.length; at++) 
-            if (dice[at] == 6)
-                sum = sum + 6;
-        return sum;
+    public int fives() {
+        return getOccurrenceOf(5);
     }
+
+    public int sixes() {
+        return getOccurrenceOf(6);
+    }
+
+    private  int getOccurrenceOf(int target) {
+        int[] occurrences = Arrays.stream(this.dice)
+            .filter(value -> value == target)
+            .toArray();
+        return occurrences.length * target;
+    }
+
 
     public static int score_pair(int d1, int d2, int d3, int d4, int d5)
     {

@@ -24,7 +24,9 @@ public class YatzyTest {
         assertEquals(0, Yatzy.yatzy(6,6,6,6,3));
     }
 
-    @Test public void test_1s() {
+    @Test
+    @DisplayName("Test ones method with different sets of dice values")
+    public void test_ones() {
         assertTrue(Yatzy.ones(1,2,3,4,5) == 1);
         assertEquals(2, Yatzy.ones(1,2,1,4,5));
         assertEquals(0, Yatzy.ones(6,2,2,4,5));
@@ -32,18 +34,21 @@ public class YatzyTest {
     }
 
     @Test
-    public void test_2s() {
+    @DisplayName("Test twos method with different sets of dice values")
+    public void test_twos() {
         assertEquals(4, Yatzy.twos(1,2,3,2,6));
         assertEquals(10, Yatzy.twos(2,2,2,2,2));
     }
 
     @Test
+    @DisplayName("Test threes method with different sets of dice values")
     public void test_threes() {
         assertEquals(6, Yatzy.threes(1,2,3,2,3));
         assertEquals(12, Yatzy.threes(2,3,3,3,3));
     }
 
     @Test
+    @DisplayName("Test fours method with different sets of dice values")
     public void fours_test() 
     {
         assertEquals(12, new Yatzy(4,4,4,5,5).fours());
@@ -52,6 +57,7 @@ public class YatzyTest {
     }
 
     @Test
+    @DisplayName("Test fives method with different sets of dice values")
     public void fives() {
         assertEquals(10, new Yatzy(4,4,4,5,5).fives());
         assertEquals(15, new Yatzy(4,4,5,5,5).fives());
@@ -59,6 +65,7 @@ public class YatzyTest {
     }
 
     @Test
+    @DisplayName("Test sixes method with different sets of dice values")
     public void sixes_test() {
         assertEquals(0, new Yatzy(4,4,4,5,5).sixes());
         assertEquals(6, new Yatzy(4,4,6,5,5).sixes());
